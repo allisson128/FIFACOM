@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="gerenciaDocente">
+
+  <head>
+    <title>Docentes</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/fifacom.css" />
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/bootstrap.css">
+    <script src="../lib/angular/angular.js"></script>
+    <script src="../lib/angular/angular-messages.js"></script>
+    <script src="../js/fifacom.js"></script>
+    <script src="../js/controllers/gerenciaDocenteCtrl.js"></script>
+  </head>
+
+  <body ng-controller="gerenciaDocenteCtrl">
+    <div id="name-panel">
+      <h1 id="fst-heading">Gestor FIFACOM</h1>
+    </div>
+
+    <nav>
+      <ul>
+      	<li><a href="../index.html">Início</a></li>
+      	<li><a href="disciplinas.html">Disciplinas</a></li>
+      	<li><a href="docentes.html">Docentes</a></li>
+      	<li><a href="consulta.html">Consulta</a></li>
+      </ul>
+    </nav>
+
+    <section>
+      <div class="titulo">
+        <h1>{{appDocente}}</h1>
+
+	<!-- <p>Gestão de Filas para Lecionar Disciplinas na FACOM</p> -->
+      </div>
+
+      <hr>
+      <div class="jumbotron">
+
+        {{message}}
+        <!-- <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Nome do docente"/> -->
+        <!-- <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="CPF do docente"/> -->
+
+        <form name="docenteForm">
+          <input class="form-control" type="text" ng-model="docente.nome" name="nome" placeholder="Nome do docente" ng-required="true" ng-minlength="5"/>
+          <input class="form-control" type="text" ng-model="docente.cpf" name="cpf" placeholder="CPF do docente" ng-required="true" ng-pattern="/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/"/>
+          <!-- <select class="form-control" ng-model="docente.operadora" ng-options="operadora.nome + ' ( ' + (operadora.preco | currency) + ' )' for operadora in operadoras | orderBy:'nome'"> -->
+          <!--   <option value="">Selecione uma operadora</option> -->
+          <!-- </select> -->
+        </form>
+
+        <div ng-show="docenteForm.nome.$dirty" ng-messages="docenteForm.nome.$error">
+          <div ng-message="required" class="alert alert-danger">
+            Por favor, preencha o campo nome!
+          </div>
+          <div ng-message="minlength" class="alert alert-danger">
+            O campo nome deve ter no mínimo 5 caracteres.
+          </div>
+        </div>
+
+        <div ng-show="docenteForm.cpf.$error.required && docenteForm.cpf.$dirty" class="alert alert-danger">
+          Por favor, preencha o campo cpf!
+        </div>
+        <div ng-show="docenteForm.cpf.$error.pattern" class="alert alert-danger">
+          O campo cpf deve ter o formato 000.000.000-00
+        </div>
+        <button class="btn btn-primary btn-block" ng-click="adicionarDocente(docente)" ng-disabled="docenteForm.$invalid">Cadastrar Docente</button>
+
+        
+
+        <table ng-show="docentes.length > 0" class="table table-striped">
+          <tr>
+            <th></th>
+            <th><a href="" ng-click="ordenarPor('nome')">Nome</a></th>
+            <th><a href="" ng-click="ordenarPor('cpf')">CPF<a/></th>
+            <!-- <th>Operadora</th> -->
+            <!-- <th>Data</th> -->
+          </tr>
+          <tr ng-class="{'selecionado negrito': docente.selecionado}" ng-repeat="docente in docentes | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
+            <td><input type="checkbox" ng-model="docente.selecionado"/></td>
+            <td>{{docente.nome}}</td>
+            <td>{{docente.cpf}}</td>
+            <!-- <td>{{docente.operadora.nome}}</td> -->
+            <!-- <td>{{docente.data | date:'dd/MM/yyyy HH:mm'}}</td> -->
+          </tr>
+        </table>
+
+        <button class="btn btn-danger btn-block" ng-click="apagarDocentes(docentes)" ng-if="isDocenteSelecionado(docentes)">Apagar Docentes</button>
+
+        <hr/>
+      </div>
+    </section>
+    
+    <footer>
+
+    </footer>
+  </body>
+
+</html>
