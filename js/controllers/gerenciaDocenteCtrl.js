@@ -7,16 +7,23 @@ angular.module("gerenciaDocente").controller("gerenciaDocenteCtrl", function ($s
 
 	$scope.carregarDocentes = function () {
 		$http.get("http://localhost:3000/docentes").success(function (data) {
+			$scope.message = "carregou docentes: " + data;
 			$scope.docentes = data;
 		}).error(function (data, status) {
-			$scope.message = "Aconteceu um problema: " + data;
+			$scope.message = "Aconteceu um problema de Carregamento: " + data;
 		});
 	};
 
 	$scope.adicionarDocente = function (docente) {
-		$scope.docentes.push(angular.copy(docente));
-		delete $scope.docente;
-		$scope.docenteForm.$setPristine();
+		$http.post("http://localhost:3000/docentes", docente).success(function (data) {		
+			$scope.message = "Adicionou docentes: " + data;
+			delete $scope.docente;
+			$scope.docenteForm.$setPristine();
+			$scope.carregarDocentes();
+		}).error(function (data, status) {
+			$scope.message = "Aconteceu um problema na hora de Adicionar: " + data;
+		});
+		console.log('AddDocente');
 	};
 	$scope.apagarDocentes = function (docentes) {
 		$scope.docentes = docentes.filter(function (docente) {
@@ -33,6 +40,6 @@ angular.module("gerenciaDocente").controller("gerenciaDocenteCtrl", function ($s
 		$scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
 	};
 
-
-
+	$scope.carregarDocentes();
+	console.log('Log');
 });

@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/allisson128/FIFACOM",
   "dependencies": {
-    "express": "^4.12.4"
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "mongojs": "^0.18.2"
   }
 }
