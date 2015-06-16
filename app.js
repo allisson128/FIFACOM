@@ -1,16 +1,40 @@
+var http 			= require('http');
+var path 			= require('path');
+var methodOverride 	= require('method-override');
+
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 var db = mongojs('fifacom');
 var bodyParser = require('body-parser');
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(methodOverride('X-HTTP-Method'));          // Microsoft
-// app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
-// app.use(methodOverride('X-Method-Override'));      // IBM
-// app.use(methodOverride('_method'));
+
+/*********** GET methods *************/
+app.get('/', function(req, res){
+	res.render('index.ejs');
+});
+
+app.get('/docentes', function(req, res){
+	res.render('docentes.ejs');
+});
+
+app.get('/disciplinas', function(req, res){
+	res.render('disciplinas.ejs');
+});
+
+
+
+app.use(methodOverride('X-HTTP-Method'));          // Microsoft
+app.use(methodOverride('X-HTTP-Method-Override')); // Google/GData
+app.use(methodOverride('X-Method-Override'));      // IBM
+app.use(methodOverride('_method'));
+
 
 app.all('*',function(req,res,next) {
 	res.header('Access-Control-Allow-Origin','*');
@@ -19,18 +43,17 @@ app.all('*',function(req,res,next) {
 	next();
 });
 
-app.get('/docentes', function (req, res) {
+app.get('/carregardocentes', function (req, res) {
 	db.collection('docentes').find({}, function(err, result){
 		res.json(result);
 	});
 });
 
-app.post('/docentes', function (req,res){
+app.post('/adicionardocente', function (req,res){
 	console.log("POST: ");
 	//res.header("Access-Control-Allow-Origin", "http://localhost");
 	//res.header("Access-Control-Allow-Methods", "GET, POST");
-
-	console.log(req.body);
+	//console.log(req.body);
 	//db.collection('docentes').insert({'nome':'filomena','cpf':'111.111.111-22'});
 	//var dado = req.body;
 
@@ -42,12 +65,13 @@ app.post('/docentes', function (req,res){
 	});
 });
 
-var server = app.listen(3000, function () {
+var server = http.createServer(app).listen(3001, function () {
 
   var host = server.address().address;
   var port = server.address().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('FIFACOM - Escutando no endereco: http://%s:%s', host, port);
 
 });
+
+
 

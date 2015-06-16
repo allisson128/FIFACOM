@@ -6,7 +6,7 @@ angular.module("gerenciaDocente").controller("gerenciaDocenteCtrl", function ($s
 			];
 
 	$scope.carregarDocentes = function () {
-		$http.get("http://localhost:3000/docentes").success(function (data) {
+		$http.get("http://localhost:3001/carregardocentes").success(function (data) {
 			$scope.message = "carregou docentes: " + data;
 			$scope.docentes = data;
 		}).error(function (data, status) {
@@ -15,7 +15,7 @@ angular.module("gerenciaDocente").controller("gerenciaDocenteCtrl", function ($s
 	};
 
 	$scope.adicionarDocente = function (docente) {
-		$http.post("http://localhost:3000/docentes", docente).success(function (data) {		
+		$http.post("http://localhost:3001/adicionardocente", docente).success(function (data) {		
 			$scope.message = "Adicionou docentes: " + data;
 			delete $scope.docente;
 			$scope.docenteForm.$setPristine();

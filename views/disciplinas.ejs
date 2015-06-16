@@ -10,10 +10,6 @@
     <script src="../lib/angular/angular-messages.js"></script>
     <script src="../js/fifacom.js"></script>
     <script src="../js/controllers/gerenciaDocenteCtrl.js"></script>
-    <script type="text/javascript">
-
-
-    </script>
   </head>
 
   <body ng-controller="gerenciaDocenteCtrl">
@@ -23,7 +19,7 @@
 
     <nav>
       <ul>
-      	<li><a href="../index.html">Início</a></li>
+      	<li><a href="index.html">Início</a></li>
       	<li><a href="disciplinas.html">Disciplinas</a></li>
       	<li><a href="docentes.html">Docentes</a></li>
       	<li><a href="consulta.html">Consulta</a></li>
@@ -40,7 +36,7 @@
       <hr>
       <div class="jumbotron">
 
-        
+        {{message}}
         <!-- <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Nome do docente"/> -->
         <!-- <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="CPF do docente"/> -->
 
@@ -68,10 +64,9 @@
           O campo cpf deve ter o formato 000.000.000-00
         </div>
         <button class="btn btn-primary btn-block" ng-click="adicionarDocente(docente)" ng-disabled="docenteForm.$invalid">Cadastrar Docente</button>
-        <button class="btn btn-primary btn-block" ng-click="carregarDocentes()" >Carregar BD</button>
+
         
-        <hr>
-        
+
         <table ng-show="docentes.length > 0" class="table table-striped">
           <tr>
             <th></th>
